@@ -1,0 +1,135 @@
+<html><head><base href="https://rockpaperscissors.game/"><title>Rock, Paper, Scissors</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+        background-color: #f0f0f0;
+    }
+    #game-container {
+        text-align: center;
+        background-color: white;
+        padding: 2rem;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    button {
+        margin: 10px;
+        padding: 10px 20px;
+        font-size: 1rem;
+        cursor: pointer;
+        background-color: #4CAF50;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        transition: background-color 0.3s;
+    }
+    button:hover {
+        background-color: #45a049;
+    }
+    #result {
+        margin-top: 20px;
+        font-size: 1.2rem;
+        font-weight: bold;
+    }
+    .choice {
+        font-size: 2rem;
+        margin: 0 10px;
+    }
+</style>
+</head>
+<body>
+<div id="game-container">
+    <h1>Rock, Paper, Scissors</h1>
+    <div id="menu">
+        <button id="start-game">Start Game</button>
+        <button id="tutorial">Tutorial</button>
+    </div>
+    <div id="game" style="display: none;">
+        <h2>Choose your move:</h2>
+        <button class="move" data-move="rock">✊ Rock</button>
+        <button class="move" data-move="paper">✋ Paper</button>
+        <button class="move" data-move="scissors">✌️ Scissors</button>
+        <div id="result"></div>
+    </div>
+    <div id="tutorial-content" style="display: none;">
+        <h2>How to Play</h2>
+        <p>1. Click "Start Game" to begin.</p>
+        <p>2. Choose Rock, Paper, or Scissors.</p>
+        <p>3. The computer will make its choice.</p>
+        <p>4. The winner is determined as follows:</p>
+        <ul>
+            <li>Rock beats Scissors</li>
+            <li>Scissors beats Paper</li>
+            <li>Paper beats Rock</li>
+        </ul>
+        <button id="back-to-menu">Back to Menu</button>
+    </div>
+</div>
+
+<script>
+    const startGameBtn = document.getElementById('start-game');
+    const tutorialBtn = document.getElementById('tutorial');
+    const menu = document.getElementById('menu');
+    const game = document.getElementById('game');
+    const tutorialContent = document.getElementById('tutorial-content');
+    const backToMenuBtn = document.getElementById('back-to-menu');
+    const result = document.getElementById('result');
+    const moveButtons = document.querySelectorAll('.move');
+
+    startGameBtn.addEventListener('click', () => {
+        menu.style.display = 'none';
+        game.style.display = 'block';
+    });
+
+    tutorialBtn.addEventListener('click', () => {
+        menu.style.display = 'none';
+        tutorialContent.style.display = 'block';
+    });
+
+    backToMenuBtn.addEventListener('click', () => {
+        tutorialContent.style.display = 'none';
+        menu.style.display = 'block';
+    });
+
+    moveButtons.forEach(button => {
+        button.addEventListener('click', () => playGame(button.dataset.move));
+    });
+
+    function playGame(playerMove) {
+        const moves = ['rock', 'paper', 'scissors'];
+        const computerMove = moves[Math.floor(Math.random() * moves.length)];
+        
+        const winner = getWinner(playerMove, computerMove);
+        
+        result.innerHTML = `
+            You chose: <span class="choice">${getEmoji(playerMove)}</span>
+            Computer chose: <span class="choice">${getEmoji(computerMove)}</span><br>
+            ${winner}
+        `;
+    }
+
+    function getWinner(player, computer) {
+        if (player === computer) return "It's a tie!";
+        if (
+            (player === 'rock' && computer === 'scissors') ||
+            (player === 'scissors' && computer === 'paper') ||
+            (player === 'paper' && computer === 'rock')
+        ) {
+            return "You win!";
+        }
+        return "Computer wins!";
+    }
+
+    function getEmoji(move) {
+        switch(move) {
+            case 'rock': return '✊';
+            case 'paper': return '✋';
+            case 'scissors': return '✌️';
+        }
+    }
+</script>
+</body></html>
